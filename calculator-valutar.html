@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator Valutar</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            border: 2px solid #0ff;
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+        }
+        input, select, button {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #0ff;
+            background: transparent;
+            color: #0ff;
+            width: calc(100% - 22px); /* Ajustează lățimea pentru padding și border */
+            outline: none;
+            box-sizing: border-box; /* Include padding și border în lățime */
+            transition: border-color 0.3s ease, color 0.3s ease;
+        }
+        input:focus, select:focus, button:focus {
+            border-color: #f0f;
+            color: #f0f;
+        }
+        button {
+            cursor: pointer;
+            background-color: #00bcd4; /* Schimbat culoarea într-un albastru deschis */
+            border: 2px solid #00bcd4; /* Păstrat aceeași culoare pentru contur */
+            color: #121212;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0fa5c5; /* Culoare mai intensă la hover */
+            color: #ffffff;
+        }
+        h2 {
+            margin-top: 20px;
+        }
+        .result-container {
+            background-color: transparent; /* Fundal transparent */
+            border: 2px solid #0ff;
+            border-radius: 20px;
+            padding: 10px;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); /* Adăugat umbre */
+        }
+        #result {
+            color: #0ff; /* Schimbat culoarea textului pentru contrast */
+            font-weight: bold;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculator Valutar</h1>
+        <input type="number" id="amount" placeholder="Suma" />
+        <select id="fromCurrency">
+            <option value="RON">RON</option>
+            <option value="EUR">EUR</option>
+            <option value="USD">USD</option>
+            <option value="MDL">MDL</option>
+            <option value="GBP">GBP</option>
+            <option value="TRY">TRY</option>
+            <option value="RSD">RSD</option>
+        </select>
+        <select id="toCurrency">
+            <option value="EUR">EUR</option>
+            <option value="RON">RON</option
+            <option value="USD">USD</option>
+            <option value="MDL">MDL</option>
+            <option value="GBP">GBP</option>
+            <option value="TRY">TRY</option>
+            <option value="RSD">RSD</option>
+        </select>
+        <button onclick="convertCurrency()">Converteste</button>
+        <div class="result-container">
+            <h2>Rezultat:</h2>
+            <span id="result">0</span>
+        </div>
+    </div>
+
+    <script>
+        const apiKey='c2ad33189dca7a1839e57ab8'
+        ; // Înlocuiește cu cheia ta API reală
+
+        async function convertCurrency() {
+            const fromCurrency = document.getElementById('fromCurrency').value;
+            const toCurrency = document.getElementById('toCurrency').value;
+            const amount = document.getElementById('amount').value;
+            const url = `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${fromCurrency}/${toCurrency}/${amount}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Problema la interogarea API-ului');
+                const data = await response.json();
+                const result = data.conversion_result;
+                document.getElementById('result').textContent = result.toFixed(2);
+            } catch (error) {
+                console.error('Eroare: ', error);
+                alert('A apărut o eroare. Verificați consola pentru detalii.');
+            }
+        }
+    </script>
+</body>
+</html>>
